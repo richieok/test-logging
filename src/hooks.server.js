@@ -1,4 +1,4 @@
-import {logger} from "$lib/logger.js"
+// import {logger} from "$lib/logger.js"
 
 export async function handle({event, resolve}){
     const response = await resolve(event)

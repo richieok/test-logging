@@ -1,5 +1,5 @@
 import { SSMClient, GetParametersCommand, GetParameterCommand } from "@aws-sdk/client-ssm";
-import {logger} from "./logger.js"
+// import {logger} from "./logger.js"
 import * as dotenv from "dotenv";
 dotenv.config();
 
