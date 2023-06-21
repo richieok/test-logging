@@ -5,34 +5,6 @@ dotenv.config();
 
 const appName = "test-logging"
 
-let init
-
-export const results = await initParams()
-
-async function initParams() {
-    if (!init) {
-        try{
-            init = {}
-            if (process.env.SERVER_LOCATION === "local") {
-                init.PORT = process.env.PORT;
-                init.LOGTO = process.env.LOG_TO;
-            } else {
-                init.PORT = await accessParameter(`/${appName}/port`);
-                init.LOG_TO = await accessParameter(`/${appName}/logto`);
-            }
-        }
-        catch(err){
-            logger.error(err)
-            init = undefined
-        }
-        finally {
-            return init
-        }
-    }
-    logger.info("Parameters already loaded")
-    return init
-}
-
 async function accessParameter(paraName) {
     const client = new SSMClient({ region: "us-east-1" });
     const input = {
@@ -44,3 +16,25 @@ async function accessParameter(paraName) {
     return response.Parameter.Value
 }
 
+export const getParams = ( ()=>{
+    let params
+    async function init(){
+        if (!params){
+            console.log('Initializing parameters');
+            params = {}
+            if (process.env.SERVER_LOCATION === "local"){
+                params.PORT = process.env.PORT;
+                params.LOGTO = process.env.LOG_TO;
+            } else {
+                params.PORT = await accessParameter(`/${appName}/port`);
+                params.LOG_TO = await accessParameter(`/${appName}/logto`);
+            }
+            return
+        }
+        console.log('Parameters already initialized');
+    }
+    return async ()=>{
+        await init()
+        return params
+    }
+})()
