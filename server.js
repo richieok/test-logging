@@ -10,7 +10,7 @@ const PORT = 3000;
 
 try{
     app.use((req, res, next)=>{
-        console.log(req.socket.remoteAddress);
+        // console.log(req.socket.remoteAddress);
         logger.info(`client address: ${req.socket.remoteAddress}`);
         next();
     })
@@ -23,6 +23,6 @@ try{
 
 }
 catch(e){
-    console.log(e.message);
+    // console.log(e.message);
     logger.error(e.message);
 }

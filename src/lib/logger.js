@@ -2,7 +2,7 @@ import { createLogger, format, transports } from "winston";
 import { getParams } from "./load-params.js";
 
 const {LOG_DIR} = await getParams()
-console.log(LOG_DIR)
+// console.log(LOG_DIR)
 
 export const logger = createLogger({
   transports: [
