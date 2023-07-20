@@ -1,5 +1,4 @@
 import { SSMClient, GetParametersCommand, GetParameterCommand } from "@aws-sdk/client-ssm";
-import {logger} from "./logger.js"
 import * as dotenv from "dotenv";
 dotenv.config();
 
@@ -20,18 +19,20 @@ export const getParams = ( ()=>{
     let params
     async function init(){
         if (!params){
-            console.log('Initializing parameters');
+            // console.log('Initializing parameters');
             params = {}
             if (process.env.SERVER_LOCATION === "local"){
                 params.PORT = process.env.PORT;
-                params.LOGTO = process.env.LOG_TO;
+                params.LOG_DIR = process.env.LOG_DIR;
+                params.NODE_ENV = process.env.NODE_ENV;
             } else {
                 params.PORT = await accessParameter(`/${appName}/port`);
-                params.LOG_TO = await accessParameter(`/${appName}/logto`);
+                params.LOG_DIR = await accessParameter(`/${appName}/log_dir`);
+                params.NODE_ENV = await accessParameter(`/${appName}/node_env`);
             }
             return
         }
-        console.log('Parameters already initialized');
+        // console.log('Parameters already initialized');
     }
     return async ()=>{
         await init()
